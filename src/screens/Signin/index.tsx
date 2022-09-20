@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import { Alert, KeyboardAvoidingView, Platform } from "react-native";
 
 import { useAuth } from "../../hooks/auth";
 
@@ -23,7 +23,6 @@ export function SignIn() {
   const { signIn, isLogging } = useAuth();
 
   function handleSignIn() {
-    console.log("aqui")
     signIn(email, password);
   }
 
