@@ -1,8 +1,6 @@
 import React from "react";
 import { KeyboardAvoidingView, Platform } from "react-native";
 
-import { useAuth } from "../../hooks/auth";
-
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 
@@ -18,7 +16,6 @@ import {
 import brandImg from "../../assets/brand.png";
 
 export function SignIn() {
-  const { } = useAuth();
   return (
     <Container>
       <KeyboardAvoidingView

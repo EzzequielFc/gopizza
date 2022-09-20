@@ -1,35 +1,52 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { View, Text } from "react-native";
+import * as SplashCreen from "expo-splash-screen"; // segurar tela de splash
 
-import AppLoading from "expo-app-loading"; // segurar a tela de splash
-import { StatusBar } from "expo-status-bar";
-
+import { StatusBar } from "react-native";
 import { ThemeProvider } from "styled-components/native";
-import { AuthProvider, useAuth } from "./src/hooks/auth";
 
-import { useFonts, DMSans_400Regular } from "@expo-google-fonts/dm-sans";
+import { DMSans_400Regular } from "@expo-google-fonts/dm-sans";
+
 import { DMSerifDisplay_400Regular } from "@expo-google-fonts/dm-serif-display";
-
+import * as Font from "expo-font";
 import theme from "./src/theme";
 
 import { SignIn } from "./src/screens/Signin";
+import { AuthProvider, useAuth } from "./src/hooks/auth";
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    DMSans_400Regular,
-    DMSerifDisplay_400Regular,
-  });
+  const [appIsReady, setAppIsReady] = useState(false);
 
-  if (!fontsLoaded) {
-    return <AppLoading />;
+  useEffect(() => {
+    (async () => {
+      try {
+        await SplashCreen.preventAutoHideAsync();
+        await Font.loadAsync({ DMSans_400Regular, DMSerifDisplay_400Regular });
+      } catch {
+        // handle error
+      } finally {
+        setAppIsReady(true);
+      }
+    })();
+  }, []);
+
+  const onLayout = useCallback(() => {
+    if (appIsReady) {
+      SplashCreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <StatusBar style="light" translucent backgroundColor="transparent" />
-
-      <AuthProvider>
-        <SignIn />
-      </AuthProvider>
-    </ThemeProvider>
+    <View onLayout={onLayout} style={{ flex: 1 }}>
+      <ThemeProvider theme={theme}>
+        <AuthProvider>
+          <SignIn />
+        </AuthProvider>
+      </ThemeProvider>
+    </View>
   );
 }
