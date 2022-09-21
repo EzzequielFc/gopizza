@@ -11,8 +11,12 @@
   "dependencies": {
     "@expo-google-fonts/dm-sans": "^0.2.2",
     "@expo-google-fonts/dm-serif-display": "^0.2.2",
+    "@firebase/firestore": "^3.5.0",
+    "@react-native-async-storage/async-storage": "^1.17.10",
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-firebase/app": "^15.6.0",
     "@react-native-firebase/auth": "^15.6.0",
+    "@react-native-firebase/firestore": "^15.6.0",
     "expo": "~46.0.9",
     "expo-app-loading": "~2.1.0",
     "expo-font": "^10.2.0",

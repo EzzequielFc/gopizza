@@ -23,7 +23,6 @@ export function SignIn() {
   const { signIn, isLogging } = useAuth();
 
   function handleSignIn() {
-    console.log("aqui")
     signIn(email, password);
   }
 
