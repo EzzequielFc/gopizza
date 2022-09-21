@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import * as SplashCreen from "expo-splash-screen"; // segurar tela de splash
 
-import { StatusBar } from "react-native";
 import { ThemeProvider } from "styled-components/native";
+import { StatusBar } from "expo-status-bar";
 
 import { DMSans_400Regular } from "@expo-google-fonts/dm-sans";
 
@@ -12,6 +12,7 @@ import * as Font from "expo-font";
 import theme from "./src/theme";
 
 import { SignIn } from "./src/screens/Signin";
+import { Product } from "./src/screens/Product";
 import { AuthProvider, useAuth } from "./src/hooks/auth";
 
 export default function App() {
@@ -42,9 +43,10 @@ export default function App() {
 
   return (
     <View onLayout={onLayout} style={{ flex: 1 }}>
+      <StatusBar style="light" translucent backgroundColor="tranparent"/>
       <ThemeProvider theme={theme}>
         <AuthProvider>
-          <SignIn />
+          <Product />
         </AuthProvider>
       </ThemeProvider>
     </View>
