@@ -20,7 +20,7 @@ import brandImg from "../../assets/brand.png";
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn, isLogging } = useAuth();
+  const { signIn,isLogging } = useAuth();
 
   function handleSignIn() {
     signIn(email, password);
