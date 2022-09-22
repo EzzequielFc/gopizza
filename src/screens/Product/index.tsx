@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Platform, TouchableOpacity, ScrollView, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 
 import { ButtonBack } from "../../components/ButtonBack";
 import { Photo } from "../../components/Photo";
@@ -41,7 +43,7 @@ export function Product() {
       });
 
       if (!result.cancelled) {
-        // setImage(result.uri);
+        setImage(result.uri);
       }
     }
   }
@@ -62,6 +64,33 @@ export function Product() {
     if(!priceSizeP || !priceSizeM || !priceSizeG) {
       return Alert.alert("Cadastro","Informe o preço de todos os tamanhos dapizza.");
     }
+
+    setIsLoading(true);
+
+    const fileName = new Date().getTime();
+    const reference = storage().ref(`/pizzas/${fileName}.png`);
+
+    await reference.putFile(image);
+    const photo_url = await reference.getDownloadURL();
+
+    firestore()
+    .collection('pizzas')
+    .add({
+      name,
+      name_insersitive:name.toLowerCase().trim(),
+      description,
+      prices_sizes: {
+        p: priceSizeP,
+        m: priceSizeM,
+        g: priceSizeG
+      },
+      photo_url,
+      photo_path: reference.fullPath
+    })
+    .then( () => Alert.alert("Cadastro", "Pizza cadastrada com sucesso."))
+    .catch( () => Alert.alert("Cadastro", "Não foi possivel cadastradar a Pizza."))
+
+    setIsLoading(false);
   }
 
   return (
