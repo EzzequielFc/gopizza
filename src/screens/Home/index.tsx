@@ -10,7 +10,11 @@ import {
   GreetinEmoji,
   GreetinText,
   Greeting,
+  MenuHeader,
+  MenuItensNumber,
+  Title,
 } from "./style";
+import { ProductCard } from "../../components/ProductCard";
 
 export function Home() {
   const { COLORS } = useTheme();
@@ -27,7 +31,21 @@ export function Home() {
         </TouchableOpacity>
       </Header>
 
-      <Search onSearch={() => {}} onClear={() => {}}/>
+      <Search onSearch={() => {}} onClear={() => {}} />
+
+      <MenuHeader>
+        <Title>Cardápio</Title>
+        <MenuItensNumber>10 pizzas</MenuItensNumber>
+      </MenuHeader>
+
+      <ProductCard
+        data={{
+          id: "1",
+          name: "Pizza",
+          description: "assajklfas",
+          photo_url: "https://github.com/ezzequielfc.png",
+        }}
+      />
     </Container>
   );
 }
