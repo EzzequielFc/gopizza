@@ -5,6 +5,7 @@ import { useTheme } from "styled-components/native";
 import { TouchableOpacity, Alert, FlatList } from "react-native";
 import { Search } from "../../components/Search";
 import firestore from "@react-native-firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
 
 import {
   Container,
@@ -21,7 +22,9 @@ import { ProductCard, ProductProps } from "../../components/ProductCard";
 export function Home() {
   const [pizzas, setPizzas] = useState<ProductProps[]>([]);
   const [search, setSearch] = useState("");
+
   const { COLORS } = useTheme();
+  const navigation = useNavigation();
 
   function fetchPizzas(value: string) {
     const formattedValue = value.toLocaleLowerCase().trim();
@@ -51,14 +54,17 @@ export function Home() {
   }
 
   function handleSearchClear() {
-    setSearch('');
-    fetchPizzas('');
+    setSearch("");
+    fetchPizzas("");
   }
 
+  function handleOpen(id: string) {
+    navigation.navigate("product", { id });
+  }
 
   useEffect(() => {
-    fetchPizzas('')
-  },[]);
+    fetchPizzas("");
+  }, []);
 
   return (
     <Container>
@@ -88,7 +94,9 @@ export function Home() {
       <FlatList
         data={pizzas}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <ProductCard data={item} />}
+        renderItem={({ item }) => (
+          <ProductCard data={item} onPress={() => handleOpen(item.id)} />
+        )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingTop: 20,
