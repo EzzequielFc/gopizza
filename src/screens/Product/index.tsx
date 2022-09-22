@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Platform, TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity, ScrollView } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 import { ButtonBack } from "../../components/ButtonBack";
 import { Photo } from "../../components/Photo";
+import { Input } from "../../components/Input";
 
 import {
   Container,
@@ -12,8 +13,14 @@ import {
   DeleteLabel,
   PickImageButton,
   Upload,
+  Form,
+  InpuGroup,
+  InputGroupHeader,
+  Label,
+  MaxCharacters,
 } from "./style";
 import { InputPrice } from "../../components/InputPrice";
+import { Button } from "../../components/Button";
 
 export function Product() {
   const [image, setImage] = useState();
@@ -27,14 +34,14 @@ export function Product() {
         aspect: [4, 4],
       });
 
-
       if (!result.cancelled) {
-        setImage(result.uri);
+        // setImage(result.uri);
       }
     }
   }
   return (
     <Container behavior={Platform.OS === "ios" ? "padding" : undefined}>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <Header>
         <ButtonBack />
 
@@ -47,13 +54,38 @@ export function Product() {
 
       <Upload>
         <Photo uri={image} />
-        <PickImageButton onPress={handlePickerImage} title="Carregar" type="secondary" />
+        <PickImageButton
+          onPress={handlePickerImage}
+          title="Carregar"
+          type="secondary"
+        />
       </Upload>
 
-      <InputPrice size="P" />
-      <InputPrice size="M" />
-      <InputPrice size="G" />
+      <Form>
+        <InpuGroup>
+          <Label>Nome</Label>
+          <Input />
+        </InpuGroup>
 
+        <InpuGroup>
+          <InputGroupHeader>
+            <Label>Descrição</Label>
+            <MaxCharacters>0 de 60 caracteres</MaxCharacters>
+          </InputGroupHeader>
+          <Input multiline maxLength={60} style={{ height: 80 }} />
+        </InpuGroup>
+
+        <InpuGroup>
+          <Label>Tamanhos e preços</Label>
+
+          <InputPrice size="P" />
+          <InputPrice size="M" />
+          <InputPrice size="G" />
+        </InpuGroup>
+
+        <Button title="Caastrar pizza" />
+      </Form>
+      </ScrollView>
     </Container>
   );
 }
