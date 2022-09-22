@@ -13,7 +13,7 @@ import theme from "./src/theme";
 
 
 import { AuthProvider, useAuth } from "./src/hooks/auth";
-import { Home } from "./src/screens/Home";
+import { Routes } from "./src/routes";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -46,7 +46,7 @@ export default function App() {
       <StatusBar/>
       <ThemeProvider theme={theme}>
         <AuthProvider>
-          <Home />
+          <Routes />
         </AuthProvider>
       </ThemeProvider>
     </View>
