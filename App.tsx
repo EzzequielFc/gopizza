@@ -43,7 +43,7 @@ export default function App() {
 
   return (
     <View onLayout={onLayout} style={{ flex: 1 }}>
-      <StatusBar style="light" translucent backgroundColor="tranparent"/>
+      <StatusBar/>
       <ThemeProvider theme={theme}>
         <AuthProvider>
           <Product />
