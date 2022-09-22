@@ -11,9 +11,9 @@ import { DMSerifDisplay_400Regular } from "@expo-google-fonts/dm-serif-display";
 import * as Font from "expo-font";
 import theme from "./src/theme";
 
-import { SignIn } from "./src/screens/Signin";
-import { Product } from "./src/screens/Product";
+
 import { AuthProvider, useAuth } from "./src/hooks/auth";
+import { Home } from "./src/screens/Home";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -46,7 +46,7 @@ export default function App() {
       <StatusBar/>
       <ThemeProvider theme={theme}>
         <AuthProvider>
-          <Product />
+          <Home />
         </AuthProvider>
       </ThemeProvider>
     </View>
