@@ -23,7 +23,13 @@ import { InputPrice } from "../../components/InputPrice";
 import { Button } from "../../components/Button";
 
 export function Product() {
-  const [image, setImage] = useState();
+  const [image, setImage] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [priceSizeP, setPriceSizeP] = useState("");
+  const [priceSizeM, setPriceSizeM] = useState("");
+  const [priceSizeG, setPriceSizeG] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handlePickerImage() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -42,49 +48,69 @@ export function Product() {
   return (
     <Container behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <ScrollView showsVerticalScrollIndicator={false}>
-      <Header>
-        <ButtonBack />
+        <Header>
+          <ButtonBack />
 
-        <Title>Cadastrar</Title>
+          <Title>Cadastrar</Title>
 
-        <TouchableOpacity>
-          <DeleteLabel>Deletar</DeleteLabel>
-        </TouchableOpacity>
-      </Header>
+          <TouchableOpacity>
+            <DeleteLabel>Deletar</DeleteLabel>
+          </TouchableOpacity>
+        </Header>
 
-      <Upload>
-        <Photo uri={image} />
-        <PickImageButton
-          onPress={handlePickerImage}
-          title="Carregar"
-          type="secondary"
-        />
-      </Upload>
+        <Upload>
+          <Photo uri={image} />
+          <PickImageButton
+            onPress={handlePickerImage}
+            title="Carregar"
+            type="secondary"
+          />
+        </Upload>
 
-      <Form>
-        <InpuGroup>
-          <Label>Nome</Label>
-          <Input />
-        </InpuGroup>
+        <Form>
+          <InpuGroup>
+            <Label>Nome</Label>
+            <Input onChangeText={setName} value={name} />
+          </InpuGroup>
 
-        <InpuGroup>
-          <InputGroupHeader>
-            <Label>Descrição</Label>
-            <MaxCharacters>0 de 60 caracteres</MaxCharacters>
-          </InputGroupHeader>
-          <Input multiline maxLength={60} style={{ height: 80 }} />
-        </InpuGroup>
+          <InpuGroup>
+            <InputGroupHeader>
+              <Label>Descrição</Label>
+              <MaxCharacters>0 de 60 caracteres</MaxCharacters>
+            </InputGroupHeader>
+            <Input
+              multiline
+              maxLength={60}
+              style={{ height: 80 }}
+              onChangeText={setDescription}
+              value={description}
+            />
+          </InpuGroup>
 
-        <InpuGroup>
-          <Label>Tamanhos e preços</Label>
+          <InpuGroup>
+            <Label>Tamanhos e preços</Label>
 
-          <InputPrice size="P" />
-          <InputPrice size="M" />
-          <InputPrice size="G" />
-        </InpuGroup>
+            <InputPrice
+              size="P"
+              onChangeText={setPriceSizeP}
+              value={priceSizeP}
+            />
 
-        <Button title="Caastrar pizza" />
-      </Form>
+            <InputPrice
+              size="M"
+              onChangeText={setPriceSizeM}
+              value={priceSizeM}
+            />
+
+            <InputPrice
+              size="G"
+              onChangeText={setPriceSizeG}
+              value={priceSizeG}
+            />
+          </InpuGroup>
+
+          <Button title="Caastrar pizza" />
+        </Form>
       </ScrollView>
     </Container>
   );
