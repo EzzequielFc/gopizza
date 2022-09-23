@@ -6,6 +6,7 @@ import { TouchableOpacity, Alert, FlatList } from "react-native";
 import { Search } from "../../components/Search";
 import firestore from "@react-native-firebase/firestore";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useAuth } from "../../hooks/auth";
 
 import {
   Container,
@@ -26,6 +27,7 @@ export function Home() {
 
   const { COLORS } = useTheme();
   const navigation = useNavigation();
+  const { signOut } = useAuth();
 
   function fetchPizzas(value: string) {
     const formattedValue = value.toLocaleLowerCase().trim();
@@ -82,7 +84,7 @@ export function Home() {
         </Greeting>
 
         <TouchableOpacity>
-          <MaterialIcons name="logout" color={COLORS.TITLE} size={24} />
+          <MaterialIcons name="logout" color={COLORS.TITLE} size={24} onPress={signOut}/>
         </TouchableOpacity>
       </Header>
 
