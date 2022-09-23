@@ -37,7 +37,7 @@ export const Identification = styled.View`
 `;
 
 export const Description = styled.Text`
-    font-size: 12;
+    font-size: 12px;
     line-height: 20px;
     margin-right: 21px;
 
