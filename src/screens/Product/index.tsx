@@ -113,16 +113,28 @@ export function Product() {
         photo_url,
         photo_path: reference.fullPath,
       })
-      .then(() => Alert.alert("Cadastro", "Pizza cadastrada com sucesso."))
-      .catch(() =>
-        Alert.alert("Cadastro", "Não foi possivel cadastradar a Pizza.")
-      );
-
-    setIsLoading(false);
+      .then(() => navigation.navigate("home"))
+      .catch(() => {
+        setIsLoading(false);
+        Alert.alert("Cadastro", "Não foi possivel cadastradar a Pizza.");
+      }  );
   }
 
   function handleGoBack() {
     navigation.goBack();
+  }
+
+  function handleDelete() {
+    firestore()
+      .collection("pizzas")
+      .doc(id)
+      .delete()
+      .then(() => {
+        storage()
+          .ref(photoPath)
+          .delete()
+          .then(() => navigation.navigate("home"));
+      });
   }
 
   useEffect(() => {
@@ -154,7 +166,7 @@ export function Product() {
           <Title>Cadastrar</Title>
 
           {id ? (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleDelete}>
               <DeleteLabel>Deletar</DeleteLabel>
             </TouchableOpacity>
           ) : (

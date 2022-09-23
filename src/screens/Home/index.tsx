@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import happyEmoji from "../../assets/happy.png";
 import { useTheme } from "styled-components/native";
 import { TouchableOpacity, Alert, FlatList } from "react-native";
 import { Search } from "../../components/Search";
 import firestore from "@react-native-firebase/firestore";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import {
   Container,
@@ -67,9 +67,11 @@ export function Home() {
     navigation.navigate("product", { });
   }
 
-  useEffect(() => {
+
+  useFocusEffect(
+    useCallback(() => {
     fetchPizzas("");
-  }, []);
+  }, []));
 
   return (
     <Container>
@@ -93,7 +95,7 @@ export function Home() {
 
       <MenuHeader>
         <Title>Cardápio</Title>
-        <MenuItensNumber>10 pizzas</MenuItensNumber>
+        <MenuItensNumber>{pizzas.length} pizzas</MenuItensNumber>
       </MenuHeader>
 
       <FlatList
