@@ -3,12 +3,14 @@ import { Platform, TouchableOpacity, ScrollView, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useRoute } from '@react-navigation/native'
 import { ProductNavigationProps } from "../../@types/navigation";
 
 import { ButtonBack } from "../../components/ButtonBack";
 import { Photo } from "../../components/Photo";
 import { Input } from "../../components/Input";
+import { InputPrice } from "../../components/InputPrice";
+import { Button } from "../../components/Button";
 
 import {
   Container,
@@ -23,8 +25,7 @@ import {
   Label,
   MaxCharacters,
 } from "./style";
-import { InputPrice } from "../../components/InputPrice";
-import { Button } from "../../components/Button";
+
 
 export function Product() {
   const [image, setImage] = useState("");
@@ -37,7 +38,7 @@ export function Product() {
 
   const route = useRoute();
   const { id } = route.params as ProductNavigationProps;
-  console.log("ID DO PRODUTO", id);
+  console.log(id);
 
   async function handlePickerImage() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
