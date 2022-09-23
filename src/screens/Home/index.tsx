@@ -16,6 +16,7 @@ import {
   MenuHeader,
   MenuItensNumber,
   Title,
+  NewProductButton,
 } from "./style";
 import { ProductCard, ProductProps } from "../../components/ProductCard";
 
@@ -62,6 +63,10 @@ export function Home() {
     navigation.navigate("product", { id });
   }
 
+  function handleAdd() {
+    navigation.navigate("product", { });
+  }
+
   useEffect(() => {
     fetchPizzas("");
   }, []);
@@ -103,6 +108,12 @@ export function Home() {
           paddingBottom: 125,
           marginHorizontal: 24,
         }}
+      />
+
+      <NewProductButton 
+        title="Cadastrar Pizza 🍕"
+        type="secondary"
+        onPress={handleAdd}
       />
     </Container>
   );
