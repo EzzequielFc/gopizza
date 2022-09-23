@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Platform, TouchableOpacity, ScrollView, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import firestore from '@react-native-firebase/firestore';
-import storage from '@react-native-firebase/storage';
-import { useRoute } from '@react-navigation/native'
+import firestore from "@react-native-firebase/firestore";
+import storage from "@react-native-firebase/storage";
+import { useRoute } from "@react-navigation/native";
 import { ProductNavigationProps } from "../../@types/navigation";
 
 import { ButtonBack } from "../../components/ButtonBack";
@@ -11,6 +11,7 @@ import { Photo } from "../../components/Photo";
 import { Input } from "../../components/Input";
 import { InputPrice } from "../../components/InputPrice";
 import { Button } from "../../components/Button";
+import { ProductProps } from "../../components/ProductCard";
 
 import {
   Container,
@@ -26,8 +27,17 @@ import {
   MaxCharacters,
 } from "./style";
 
+type PizzaResponse = ProductProps & {
+  photo_path: string;
+  price_sizes: {
+    p: string;
+    m: string;
+    g: string;
+  };
+};
 
 export function Product() {
+  const [photoPath, setPhotoPath] = useState("");
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -38,7 +48,6 @@ export function Product() {
 
   const route = useRoute();
   const { id } = route.params as ProductNavigationProps;
-  console.log(id);
 
   async function handlePickerImage() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -56,20 +65,23 @@ export function Product() {
   }
 
   async function handleAdd() {
-    if(!name.trim()) {
-      return Alert.alert("Cadastro","Informe o nome da pizza.");
+    if (!name.trim()) {
+      return Alert.alert("Cadastro", "Informe o nome da pizza.");
     }
 
-    if(!description.trim()) {
-      return Alert.alert("Cadastro","Informe a descrição da pizza.");
+    if (!description.trim()) {
+      return Alert.alert("Cadastro", "Informe a descrição da pizza.");
     }
 
-    if(!image) {
-      return Alert.alert("Cadastro","Seleciona a imagem da pizza.");
+    if (!image) {
+      return Alert.alert("Cadastro", "Seleciona a imagem da pizza.");
     }
 
-    if(!priceSizeP || !priceSizeM || !priceSizeG) {
-      return Alert.alert("Cadastro","Informe o preço de todos os tamanhos dapizza.");
+    if (!priceSizeP || !priceSizeM || !priceSizeG) {
+      return Alert.alert(
+        "Cadastro",
+        "Informe o preço de todos os tamanhos dapizza."
+      );
     }
 
     setIsLoading(true);
@@ -81,24 +93,46 @@ export function Product() {
     const photo_url = await reference.getDownloadURL();
 
     firestore()
-    .collection('pizzas')
-    .add({
-      name,
-      name_insersitive:name.toLowerCase().trim(),
-      description,
-      prices_sizes: {
-        p: priceSizeP,
-        m: priceSizeM,
-        g: priceSizeG
-      },
-      photo_url,
-      photo_path: reference.fullPath
-    })
-    .then( () => Alert.alert("Cadastro", "Pizza cadastrada com sucesso."))
-    .catch( () => Alert.alert("Cadastro", "Não foi possivel cadastradar a Pizza."))
+      .collection("pizzas")
+      .add({
+        name,
+        name_insersitive: name.toLowerCase().trim(),
+        description,
+        prices_sizes: {
+          p: priceSizeP,
+          m: priceSizeM,
+          g: priceSizeG,
+        },
+        photo_url,
+        photo_path: reference.fullPath,
+      })
+      .then(() => Alert.alert("Cadastro", "Pizza cadastrada com sucesso."))
+      .catch(() =>
+        Alert.alert("Cadastro", "Não foi possivel cadastradar a Pizza.")
+      );
 
     setIsLoading(false);
   }
+
+  useEffect(() => {
+    if (id) {
+      firestore()
+        .collection("pizzas")
+        .doc(id)
+        .get()
+        .then((response) => {
+          const product = response.data() as PizzaResponse;
+
+          setName(product.name);
+          setImage(product.photo_url);
+          setDescription(product.description);
+          setPriceSizeP(product.prices_sizes.p);
+          setPriceSizeM(product.prices_sizes.m);
+          setPriceSizeG(product.prices_sizes.g);
+          setPhotoPath(product.photo_path);
+        });
+    }
+  }, [id]);
 
   return (
     <Container behavior={Platform.OS === "ios" ? "padding" : undefined}>
