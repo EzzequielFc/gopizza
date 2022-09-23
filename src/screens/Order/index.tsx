@@ -14,7 +14,7 @@ import {
 } from "./style";
 
 import { PIZZA_TYPES } from "../../utils/pizzaTypes";
-
+import { useNavigation } from "@react-navigation/native";
 import { ButtonBack } from "../../components/ButtonBack";
 import { RadioButton } from "../../components/RadioButton";
 import { Input } from "../../components/Input";
@@ -22,11 +22,17 @@ import { Button } from "../../components/Button";
 
 export function Order() {
   const [size, setSize] = useState("");
+
+  const navigation = useNavigation();
+
+  function handleGoBack() {
+    navigation.goBack();
+  }
   return (
     <Container>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header>
-          <ButtonBack onPress={() => {}} style={{ marginBottom: 108 }} />
+          <ButtonBack onPress={handleGoBack} style={{ marginBottom: 108 }} />
         </Header>
 
         <Photo source={{ uri: "https://github.com/ezzequielfc.png" }} />

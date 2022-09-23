@@ -27,7 +27,7 @@ export function Home() {
 
   const { COLORS } = useTheme();
   const navigation = useNavigation();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
 
   function fetchPizzas(value: string) {
     const formattedValue = value.toLocaleLowerCase().trim();
@@ -62,18 +62,19 @@ export function Home() {
   }
 
   function handleOpen(id: string) {
-    navigation.navigate("product", { id });
+    const route = user?.isAdmin ? 'product' : 'order';
+    navigation.navigate(route,{ id });
   }
 
   function handleAdd() {
-    navigation.navigate("product", { });
+    navigation.navigate("product", {});
   }
-
 
   useFocusEffect(
     useCallback(() => {
-    fetchPizzas("");
-  }, []));
+      fetchPizzas("");
+    }, [])
+  );
 
   return (
     <Container>
@@ -84,7 +85,12 @@ export function Home() {
         </Greeting>
 
         <TouchableOpacity>
-          <MaterialIcons name="logout" color={COLORS.TITLE} size={24} onPress={signOut}/>
+          <MaterialIcons
+            name="logout"
+            color={COLORS.TITLE}
+            size={24}
+            onPress={signOut}
+          />
         </TouchableOpacity>
       </Header>
 
@@ -114,11 +120,14 @@ export function Home() {
         }}
       />
 
-      <NewProductButton 
-        title="Cadastrar Pizza 🍕"
-        type="secondary"
-        onPress={handleAdd}
-      />
+      {
+        user?.isAdmin &&
+        <NewProductButton
+          title="Cadastrar Pizza 🍕"
+          type="secondary"
+          onPress={handleAdd}
+        />
+      }
     </Container>
   );
 }
