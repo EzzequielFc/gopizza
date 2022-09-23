@@ -14,6 +14,7 @@ import theme from "./src/theme";
 
 import { AuthProvider, useAuth } from "./src/hooks/auth";
 import { Routes } from "./src/routes";
+import { Order } from "./src/screens/Order";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -46,7 +47,7 @@ export default function App() {
       <StatusBar/>
       <ThemeProvider theme={theme}>
         <AuthProvider>
-          <Routes />
+          <Order />
         </AuthProvider>
       </ThemeProvider>
     </View>
